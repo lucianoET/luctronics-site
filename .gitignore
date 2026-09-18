@@ -1,0 +1,17 @@
+# sistema
+.DS_Store
+Thumbs.db
+*~
+
+# backups e material não publicado
+_arquivo/
+*.bak
+*.bak-*
+
+# dependências / build (caso o site ganhe toolchain depois)
+node_modules/
+dist/
+.vercel/
+.netlify/
+.env
+.env.*

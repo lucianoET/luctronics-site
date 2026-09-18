@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Documentação técnica da plataforma Luctronics — arquitetura, módulos, API REST, integrações e requisitos de implantação.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://luctronics.com.br/documentacao.html">
+<title>Documentação — Luctronics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230057FF'/%3E%3Cpolyline points='27 16 22 16 18 26 12 6 9 16 5 16' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#0057FF;--blue2:#003FCC;--blue-light:#EEF3FF;--dark:#0A0F1E;--text:#1A2240;--text2:#4A5578;--text3:#8A95B0;--white:#fff;--gray:#F4F6FB;--gray2:#E8ECF5;--border:#DDE3F0;--green:#00C48C;--green-dark:#00996E;--font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;--radius:12px;--radius-lg:20px}
+body{background:var(--white);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.7}
+html{scroll-behavior:smooth}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon svg{width:20px;height:20px;stroke:#fff;stroke-width:2.5;fill:none}
+.logo-name{font-size:18px;font-weight:800;color:var(--dark);letter-spacing:-.5px}
+.logo-name span{color:var(--blue)}
+.nav-back{color:var(--text2);text-decoration:none;font-size:14px;font-weight:600}
+.nav-back:hover{color:var(--blue)}
+.doc-head{background:var(--gray);border-bottom:1px solid var(--border);padding:3.5rem 2.5rem 3rem}
+.doc-head-inner{max-width:920px;margin:0 auto}
+.doc-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem}
+h1{font-size:clamp(1.9rem,4vw,2.6rem);font-weight:900;letter-spacing:-1.2px;line-height:1.15;color:var(--dark);margin-bottom:.75rem}
+.doc-meta{font-size:14px;color:var(--text3)}
+main{max-width:920px;margin:0 auto;padding:3rem 2.5rem 4.5rem}
+.toc{background:var(--gray);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:3rem}
+.toc h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.85rem}
+.toc ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.5rem 1.5rem}
+.toc a{color:var(--text2);text-decoration:none;font-size:14px;font-weight:600}
+.toc a:hover{color:var(--blue)}
+h2{font-size:1.45rem;font-weight:900;letter-spacing:-.6px;color:var(--dark);margin:3rem 0 1rem;padding-top:.5rem;border-top:1px solid var(--border)}
+main > h2:first-of-type{border-top:none;margin-top:0;padding-top:0}
+h3{font-size:1.05rem;font-weight:700;color:var(--dark);margin:1.75rem 0 .55rem}
+p{margin-bottom:1rem;color:var(--text2)}
+ul,ol{margin:0 0 1rem 1.25rem;color:var(--text2)}
+li{margin-bottom:.5rem}
+a{color:var(--blue)}
+strong{color:var(--text)}
+code{font-family:var(--mono);font-size:.88em;background:var(--gray2);color:var(--blue2);padding:2px 6px;border-radius:4px}
+pre{background:var(--dark);border-radius:var(--radius);padding:1.15rem 1.35rem;overflow-x:auto;margin:1rem 0 1.5rem}
+pre code{background:none;color:#C5D6FF;padding:0;font-size:13px;line-height:1.7;display:block;white-space:pre}
+pre code .c{color:#5A6785}
+pre code .k{color:#7EB5FF}
+pre code .s{color:#8FE3C4}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:14px}
+th,td{border:1px solid var(--border);padding:.7rem .85rem;text-align:left;vertical-align:top}
+th{background:var(--gray);font-weight:700;color:var(--dark);font-size:13px}
+td{color:var(--text2)}
+td code{font-size:12px}
+.badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px}
+.b-prod{background:#DCFCE7;color:var(--green-dark)}
+.b-beta{background:var(--blue-light);color:var(--blue2)}
+.b-dev{background:var(--blue-light);color:var(--blue2)}
+.b-road{background:var(--gray2);color:var(--text3)}
+.note{background:var(--blue-light);border-left:4px solid var(--blue);border-radius:var(--radius);padding:1.1rem 1.3rem;margin:1.5rem 0;font-size:14px;color:var(--text2);line-height:1.7}
+.note strong{color:var(--blue2)}
+.cta-box{background:var(--gray);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-top:3rem;text-align:center}
+.cta-box h3{margin-top:0;font-size:1.15rem}
+.cta-box p{max-width:520px;margin:0 auto 1.5rem}
+.btn-blue{background:var(--blue);color:#fff;padding:12px 24px;border-radius:9px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block;transition:background .2s}
+.btn-blue:hover{background:var(--blue2)}
+footer{background:var(--dark);padding:2.5rem;text-align:center}
+footer p{color:rgba(255,255,255,.3);font-size:12px;margin:0}
+footer a{color:rgba(255,255,255,.45);text-decoration:none;font-size:12px}
+footer a:hover{color:#fff}
+@media(max-width:600px){nav{padding:0 1.25rem}.doc-head{padding:2.5rem 1.25rem 2rem}main{padding:2.5rem 1.25rem 3.5rem}table{font-size:13px}th,td{padding:.55rem .6rem}pre{padding:1rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="logo-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+    <span class="logo-name">luc<span>tronics</span></span>
+  </a>
+  <a class="nav-back" href="/">← Voltar ao site</a>
+</nav>
+
+<div class="doc-head">
+  <div class="doc-head-inner">
+    <div class="doc-eyebrow">Documentação</div>
+    <h1>Documentação técnica</h1>
+    <p class="doc-meta">Visão geral da arquitetura, módulos, API e requisitos de implantação da plataforma Luctronics.</p>
+  </div>
+</div>
+
+<main>
+
+<div class="toc">
+  <h4>Nesta página</h4>
+  <ul>
+    <li><a href="#visao">Visão geral</a></li>
+    <li><a href="#arquitetura">Arquitetura</a></li>
+    <li><a href="#modulos">Módulos</a></li>
+    <li><a href="#aguada">Sensoriamento</a></li>
+    <li><a href="#api">API REST</a></li>
+    <li><a href="#integracoes">Integrações</a></li>
+    <li><a href="#implantacao">Implantação</a></li>
+    <li><a href="#seguranca">Segurança e dados</a></li>
+  </ul>
+</div>
+
+<h2 id="visao">Visão geral</h2>
+<p>A Luctronics é uma plataforma modular de gestão de manutenção e monitoramento de infraestrutura. Todos os módulos compartilham a mesma base de dados, o mesmo controle de acesso e o mesmo modelo de ativos — o que permite consultas transversais (por exemplo: todas as pendências de um mesmo local, independentemente do módulo que as gerou).</p>
+<p>O sistema foi desenhado a partir de uma operação real de manutenção especializada, não a partir de um requisito teórico. Isso significa fluxos que refletem a prática: ordem de serviço que passa por contratação, fiscalização e certificação; lista de compras gerada a partir da baixa de estoque; laudo de inspeção com matriz de priorização.</p>
+
+<h2 id="arquitetura">Arquitetura</h2>
+<table>
+  <thead><tr><th>Camada</th><th>Tecnologia</th><th>Função</th></tr></thead>
+  <tbody>
+    <tr><td>Sensores de campo</td><td>ESP32 + ESP-NOW</td><td>Leitura de nível, temperatura e estado de ativos, em rede mesh sem dependência de Wi-Fi</td></tr>
+    <tr><td>Gateway</td><td>ESP32 / MQTT</td><td>Agrega os nós da mesh e publica no broker</td></tr>
+    <tr><td>Backend</td><td>FastAPI (Python)</td><td>Regras de negócio, autenticação, API REST</td></tr>
+    <tr><td>Persistência</td><td>SQLite / PostgreSQL</td><td>Base única compartilhada entre módulos</td></tr>
+    <tr><td>Frontend</td><td>Web responsivo</td><td>Interface acessível de desktop, tablet e celular</td></tr>
+    <tr><td>Visualização</td><td>Grafana (opcional)</td><td>Dashboards e séries temporais avançadas</td></tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>Sem dependência de nuvem obrigatória.</strong> A plataforma pode operar em servidor próprio da organização (on-premise), em nuvem, ou em modelo híbrido — sensores locais com sincronização periódica. Para órgãos com restrição de tráfego externo, o modo on-premise é o padrão recomendado.
+</div>
+
+<h2 id="modulos">Módulos</h2>
+
+<h3>PMOC · Climatização <span class="badge b-prod">Em produção</span></h3>
+<p>Plano de Manutenção, Operação e Controle para sistemas de climatização. Cadastro de unidades, planos periódicos, geração de ordem de serviço com fluxo de contratação (incluindo adesão a Ata de Registro de Preços), fiscalização, certificação de execução, QR code por equipamento e impressão de relatórios.</p>
+
+<h3>Elétrica <span class="badge b-prod">Em produção</span></h3>
+<p>Geradores, quadros gerais de baixa tensão (QGBT), nobreaks e iluminação. Planos disparados por horas de operação, OS com baixa automática de estoque e geração de lista de compras a partir das peças consumidas.</p>
+
+<h3>Predial <span class="badge b-prod">Em produção</span></h3>
+<p>Inspeção predial conforme NBR 5674 e NBR 16747. Árvore hierárquica de locais, checklists por template, matriz GUT (Gravidade, Urgência, Tendência) para priorização e emissão de laudos.</p>
+
+<h3>Calibração <span class="badge b-prod">Em produção</span></h3>
+<p>Rastreabilidade metrológica de instrumentos. Controle de vencimentos, anexo de certificados e laudos, cronograma de envio e alerta de instrumento fora de validade.</p>
+
+<h3>Transportes <span class="badge b-prod">Em produção</span></h3>
+<p>Gestão de frota — viaturas e embarcações. Importação da base de ativos, programação de viagens, planos de manutenção e relatórios operacionais.</p>
+
+<h3>Máquinas <span class="badge b-prod">Em produção</span></h3>
+<p>Equipamentos com controle por horímetro. Cadastro de peças com preço, registro de consumo de combustível, acompanhamento de ciclo de vida do ativo e lista de compras.</p>
+
+<h3>Aviso sonoro <span class="badge b-prod">Em produção</span></h3>
+<p>Sistemas de sonorização PA 70V — amplificadores, consoles, cornetas, linhas e sirenes. Testes periódicos com registro estruturado de não conformidade.</p>
+
+<h3>Paióis <span class="badge b-prod">Em produção</span></h3>
+<p>Monitoramento ambiental de paióis e depósitos: temperatura, umidade e detecção de fumaça, por sensores de campo e por medição manual registrada em ronda. Inclui inventário do que está armazenado, controle da climatização do ambiente e mural de leitura consolidada para a portaria.</p>
+
+<h3>Gestão e Qualidade <span class="badge b-prod">Em produção</span></h3>
+<p>Camada de gestão à vista sobre todos os módulos: indicadores da NBR 5674, plano de ação 5W2H priorizado por matriz GUT, calendário consolidado de intervenções e as ferramentas clássicas da qualidade aplicadas ao histórico de OS.</p>
+
+<h3>Equipes <span class="badge b-prod">Em produção</span></h3>
+<p>Cadastro de pessoas, ofícios e equipes da oficina, com escala semanal por turno e capacidade expressa em homem-hora. O cadastro é compartilhado por todos os módulos, o que permite confrontar carga planejada com capacidade real antes de programar a manutenção.</p>
+
+<h3>Bio <span class="badge b-beta">Beta</span></h3>
+<p>Gestão biológica do terreno: fichas de fauna, pragas e espécies arbóreas, árvores etiquetadas com QR code, registro georreferenciado de ocorrências e programação dos serviços de poda e controle com periodicidade definida.</p>
+
+<h3>Energia e água <span class="badge b-dev">Em desenvolvimento</span></h3>
+<p>Painel de eficiência energética e hídrica: consumo, demanda contratada, indicadores por área e metas de redução. A interface já está disponível como demonstração com números simulados — a base de medição real ainda está em implantação.</p>
+
+<h3>Aguada · Hidráulico <span class="badge b-prod">Disponível</span></h3>
+<p>Monitoramento de reservatórios e sistema hidráulico via sensores ESP32. Existe como <strong>aplicação independente</strong> e também como módulo integrado à plataforma. Detalhado na seção de sensoriamento.</p>
+
+<h3>Sentinela · Segurança <span class="badge b-dev">Em desenvolvimento</span></h3>
+<p>Camada de visão computacional aplicada ao CFTV já existente na instalação: detecção e classificação de objetos, rastreamento entre quadros, contagem e disparo de alarmes por regra configurável. Integra-se ao mesmo motor de alertas dos demais módulos.</p>
+
+<h3>Mapa <span class="badge b-beta">Beta</span></h3>
+<p>Mapa interativo da instalação (Leaflet), com basemaps de mapa e satélite e camadas sobrepostas por módulo.</p>
+
+<h2 id="aguada">Camada de sensoriamento</h2>
+<p>Sensoriamento não é um módulo isolado — é uma camada transversal. Onde há grandeza física que valha a pena medir, existe um dispositivo ESP32 que alimenta a mesma base usada pela gestão de manutenção. Isso permite, por exemplo, que uma leitura fora de faixa abra automaticamente uma ordem de serviço no módulo correspondente.</p>
+
+<table>
+  <thead><tr><th>Módulo</th><th>Dispositivo</th><th>Grandezas</th><th>Estágio</th></tr></thead>
+  <tbody>
+    <tr><td>Hidráulico</td><td><code>Aguada</code></td><td>Nível, vazão, estado de bomba, temperatura</td><td><span class="badge b-prod">Disponível</span></td></tr>
+    <tr><td>Climatização</td><td><code>AirQ</code></td><td>Qualidade do ar, temperatura</td><td><span class="badge b-dev">Em desenv.</span></td></tr>
+    <tr><td>Transportes e Máquinas</td><td><code>Node de telemetria</code></td><td>GPS, giroscópio, vibração, temperatura</td><td><span class="badge b-dev">Em desenv.</span></td></tr>
+    <tr><td>Aviso sonoro</td><td><code>Node de áudio</code></td><td>Áudio, texto e alertas via IP ou ESP-NOW</td><td><span class="badge b-dev">Em desenv.</span></td></tr>
+    <tr><td>Segurança</td><td><code>Sentinela</code></td><td>Detecção, classificação, rastreamento e contagem sobre CFTV</td><td><span class="badge b-dev">Em desenv.</span></td></tr>
+    <tr><td>Elétrica</td><td>—</td><td>Instrumentação prevista para etapa futura</td><td><span class="badge b-road">Roadmap</span></td></tr>
+    <tr><td>Predial</td><td>—</td><td>Inspeção presencial por natureza</td><td>—</td></tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>O que está pronto hoje é o Aguada.</strong> Os demais dispositivos estão em bancada, em estágios diferentes de desenvolvimento. Estágios são atualizados nesta página conforme avançam — não trate item "em desenvolvimento" como entregável contratável sem confirmação prévia.
+</div>
+
+<h3>Aguada — arquitetura de referência</h3>
+<p>O Aguada usa uma rede mesh de nós ESP32 comunicando por <strong>ESP-NOW</strong>, protocolo ponto-a-ponto da Espressif que dispensa infraestrutura Wi-Fi no ponto de medição. Isso resolve o problema clássico de reservatório em local sem cobertura de rede. A mesma topologia serve de base para os demais dispositivos da camada.</p>
+
+<h3>Topologia</h3>
+<pre><code><span class="c"># Cada nó fala com o vizinho mais próximo até chegar ao gateway</span>
+[Sensor R01] ──┐
+[Sensor R02] ──┼──> [Gateway ESP32] ──MQTT──> [Backend FastAPI] ──> [Dashboard]
+[Sensor R03] ──┘                                      │
+                                                      └──> [Home Assistant]</code></pre>
+
+<h3>Características</h3>
+<ul>
+  <li>Alcance típico por salto: 100 a 200 m em linha de visada</li>
+  <li>Sem ponto único de falha — a queda de um nó não derruba a rede</li>
+  <li>Intervalo de leitura configurável</li>
+  <li>Alertas por limiar (nível crítico, sensor mudo, gateway offline)</li>
+  <li>Alimentação por fonte ou bateria com painel solar, conforme o ponto</li>
+</ul>
+
+<h3>Grandezas suportadas</h3>
+<table>
+  <thead><tr><th>Grandeza</th><th>Sensor típico</th><th>Aplicação</th></tr></thead>
+  <tbody>
+    <tr><td>Nível</td><td>Ultrassônico / pressão hidrostática</td><td>Reservatórios, cisternas, caixas d'água</td></tr>
+    <tr><td>Estado (liga/desliga)</td><td>Entrada digital / sensor de corrente</td><td>Bombas de recalque, motores</td></tr>
+    <tr><td>Temperatura</td><td>DS18B20 / NTC</td><td>Salas técnicas, equipamentos</td></tr>
+    <tr><td>Vazão</td><td>Sensor de fluxo por turbina</td><td>Consumo e detecção de vazamento</td></tr>
+  </tbody>
+</table>
+
+<h2 id="api">API REST</h2>
+<p>A plataforma expõe uma API REST para integração com sistemas existentes — ERP, sistema de patrimônio, BI ou automação própria.</p>
+
+<div class="note">
+  <strong>Acesso mediante contrato.</strong> A especificação completa (OpenAPI) e as credenciais são fornecidas às organizações contratantes. Os exemplos abaixo ilustram o padrão de uso.
+</div>
+
+<h3>Autenticação</h3>
+<p>Autenticação por token Bearer, enviado no cabeçalho de cada requisição.</p>
+<pre><code><span class="k">GET</span> /api/v1/ativos
+<span class="k">Authorization:</span> Bearer <span class="s">&lt;seu_token&gt;</span>
+<span class="k">Accept:</span> application/json</code></pre>
+
+<h3>Endpoints principais</h3>
+<table>
+  <thead><tr><th>Método</th><th>Endpoint</th><th>Descrição</th></tr></thead>
+  <tbody>
+    <tr><td><code>GET</code></td><td><code>/api/v1/ativos</code></td><td>Lista os ativos cadastrados, com filtros por módulo e local</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/v1/ativos/{id}</code></td><td>Detalha um ativo e seu histórico de manutenção</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/v1/os</code></td><td>Lista ordens de serviço, com filtro por status e período</td></tr>
+    <tr><td><code>POST</code></td><td><code>/api/v1/os</code></td><td>Abre uma nova ordem de serviço</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/v1/leituras</code></td><td>Série temporal de leituras de sensores</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/v1/alertas</code></td><td>Alertas ativos e histórico</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/v1/calibracao/vencimentos</code></td><td>Instrumentos com calibração vencida ou a vencer</td></tr>
+  </tbody>
+</table>
+
+<h3>Exemplo de resposta</h3>
+<pre><code>{
+  <span class="s">"id"</span>: <span class="s">"R01"</span>,
+  <span class="s">"nome"</span>: <span class="s">"Reservatório Principal"</span>,
+  <span class="s">"tipo"</span>: <span class="s">"reservatorio"</span>,
+  <span class="s">"capacidade_litros"</span>: 50000,
+  <span class="s">"nivel_percentual"</span>: 76.7,
+  <span class="s">"atualizado_em"</span>: <span class="s">"2026-08-20T09:41:12-03:00"</span>,
+  <span class="s">"status"</span>: <span class="s">"normal"</span>
+}</code></pre>
+
+<h2 id="integracoes">Integrações</h2>
+<table>
+  <thead><tr><th>Plataforma</th><th>Como integra</th></tr></thead>
+  <tbody>
+    <tr><td>Home Assistant</td><td>Integração nativa via MQTT discovery — os sensores aparecem automaticamente como entidades</td></tr>
+    <tr><td>MQTT</td><td>Publicação de leituras e alertas em tópicos configuráveis</td></tr>
+    <tr><td>Grafana</td><td>Fonte de dados para dashboards e séries temporais</td></tr>
+    <tr><td>Node-RED</td><td>Consumo dos tópicos MQTT para automações personalizadas</td></tr>
+    <tr><td>Webhooks</td><td>Notificação HTTP para sistemas externos em eventos de alerta</td></tr>
+    <tr><td>Alexa / Google Home</td><td>Consulta por voz do estado dos ativos, via Home Assistant</td></tr>
+    <tr><td>API REST</td><td>Integração direta com ERP, sistema de patrimônio ou BI</td></tr>
+  </tbody>
+</table>
+
+<h2 id="implantacao">Implantação</h2>
+
+<h3>Requisitos de servidor</h3>
+<ul>
+  <li>Linux (Debian/Ubuntu recomendado) com 2 vCPU e 4 GB de RAM para instalações de porte médio</li>
+  <li>Docker ou instalação nativa com Python 3.11+</li>
+  <li>Certificado TLS (Let's Encrypt ou institucional)</li>
+  <li>Backup periódico da base — script fornecido na implantação</li>
+</ul>
+
+<h3>Requisitos de rede para o módulo IoT</h3>
+<ul>
+  <li>Gateway com alimentação estável e conectividade até o servidor</li>
+  <li>Nós de campo dentro do alcance de salto da mesh</li>
+  <li>Liberação da porta MQTT entre gateway e broker</li>
+</ul>
+
+<h3>Etapas típicas</h3>
+<ol>
+  <li><strong>Levantamento:</strong> inventário de ativos, locais e obrigações legais aplicáveis</li>
+  <li><strong>Importação:</strong> carga da base existente (planilha, sistema legado ou cadastro manual assistido)</li>
+  <li><strong>Configuração:</strong> planos de manutenção, templates de checklist, perfis de acesso</li>
+  <li><strong>Instalação de campo:</strong> apenas quando houver módulo IoT contratado</li>
+  <li><strong>Treinamento:</strong> sessões com a equipe de manutenção e com a fiscalização</li>
+  <li><strong>Acompanhamento:</strong> período assistido até a operação estabilizar</li>
+</ol>
+
+<h2 id="seguranca">Segurança e dados</h2>
+<ul>
+  <li><strong>Autenticação:</strong> acesso por credencial individual, com perfis por cargo e função</li>
+  <li><strong>Transporte:</strong> HTTPS/TLS em todas as comunicações com o servidor</li>
+  <li><strong>Auditoria:</strong> registro de quem fez o quê, quando — essencial para prestação de contas</li>
+  <li><strong>Titularidade:</strong> os dados operacionais pertencem à organização contratante</li>
+  <li><strong>Exportação:</strong> a base pode ser exportada em formato aberto a qualquer momento, sem retenção de dados como trava contratual</li>
+  <li><strong>LGPD:</strong> tratamento conforme a <a href="/privacidade.html">Política de Privacidade</a>; a Luctronics atua como operadora dos dados inseridos pelo cliente</li>
+</ul>
+
+<h3>Responsável técnico</h3>
+<table>
+  <tbody>
+    <tr><th style="width:34%">Responsável pelo desenvolvimento</th><td>Luciano de Almeida Ferreira</td></tr>
+    <tr><th>CPF</th><td><code>104.271.977-24</code></td></tr>
+    <tr><th>Endereço</th><td>Rua Haddock Lobo, nº 312, apto. 801, Tijuca — Rio de Janeiro/RJ, Brasil</td></tr>
+    <tr><th>E-mail técnico</th><td><a href="mailto:luctronics@gmail.com">luctronics@gmail.com</a></td></tr>
+    <tr><th>WhatsApp</th><td><a href="https://wa.me/5521991398668" target="_blank" rel="noopener">+55 21 99139-8668</a></td></tr>
+    <tr><th>Perfil profissional</th><td><a href="https://www.linkedin.com/in/luciano-almeida-ferreira" target="_blank" rel="noopener">LinkedIn</a></td></tr>
+    <tr><th>Repositórios</th><td><a href="https://github.com/luctronicserp" target="_blank" rel="noopener">github.com/luctronicserp</a></td></tr>
+    <tr><th>Encarregado de dados (DPO)</th><td>O mesmo responsável — ver <a href="/privacidade.html">Política de Privacidade</a></td></tr>
+  </tbody>
+</table>
+<div class="note">
+  Estes são os dados de identificação exigidos em processos de contratação pública — habilitação jurídica, atestado de capacidade técnica e indicação do encarregado de dados nos termos do art. 41 da LGPD.
+</div>
+
+<div class="cta-box">
+  <h3>Precisa da especificação completa?</h3>
+  <p>A documentação detalhada da API, o modelo de dados e a especificação técnica para Termo de Referência são fornecidos sob solicitação.</p>
+  <a href="/#contato" class="btn-blue">Entrar em contato</a>
+</div>
+
+</main>
+
+<footer>
+  <p>© 2026 Luctronics · Rio de Janeiro, RJ · <a href="/">Início</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/termos.html">Termos</a></p>
+</footer>
+
+</body>
+</html>
