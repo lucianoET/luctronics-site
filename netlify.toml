@@ -1,8 +1,25 @@
-# O site está hoje na Netlify. Este arquivo mantém a paridade com o vercel.json,
-# para que a troca de provedor não mude o comportamento das URLs nem os headers.
+# Hospedagem: Netlify (decisão de 18/09/2026 — manter, não migrar para Vercel).
+# Site estático, sem build step: a raiz do repo é publicada como está.
+# A pasta _arquivo/ fica fora do deploy por estar no .gitignore.
 [build]
   publish = "."
   command = ""
+
+# URLs limpas: /documentacao em vez de /documentacao.html
+[[redirects]]
+  from = "/documentacao"
+  to = "/documentacao.html"
+  status = 301
+
+[[redirects]]
+  from = "/privacidade"
+  to = "/privacidade.html"
+  status = 301
+
+[[redirects]]
+  from = "/termos"
+  to = "/termos.html"
+  status = 301
 
 [[headers]]
   for = "/*"
