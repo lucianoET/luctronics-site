@@ -18,11 +18,10 @@ aplicados, `og.png` e `sitemap.xml` servidos.
       É o que destrava linkar um sistema real na landing — hoje todo CTA de
       "ver funcionando" cai em agendar demonstração, porque o portal do cliente
       carrega dados operacionais reais e identifica a OM.
-- [ ] **Decidir como o repo chega à Netlify.** Conferir no painel se o projeto está
-      conectado a um repositório git ou se é deploy manual. Se for manual, publicar
-      `luctronics-site` no GitHub (org `luctronicserp`) e conectar — cada commit
-      passa a publicar sozinho. O token do `gh` na máquina está inválido:
-      `gh auth login -h github.com`.
+- [ ] **Conectar o repo à Netlify.** O repo já existe:
+      <https://github.com/lucianoET/luctronics-site> (público, `main`). Falta
+      conferir no painel da Netlify se o projeto está em deploy manual e, se
+      estiver, apontá-lo para o repositório — cada commit passa a publicar sozinho.
 
 ## 🟡 Conteúdo e identidade
 
@@ -84,3 +83,10 @@ aplicados, `og.png` e `sitemap.xml` servidos.
 - [x] `robots.txt`, `sitemap.xml`, `netlify.toml` com headers e redirects — 18/09
 - [x] Corrigir provedores de hospedagem na política de privacidade — 18/09
 - [x] Repo git iniciado e ~7 MB de imagens órfãs tiradas do deploy — 18/09
+- [x] Publicar `luctronics-site` no GitHub como `lucianoET/luctronics-site`,
+      público, 3 commits — 21/09. Ficou na conta pessoal, e não na org
+      `luctronicserp`, porque é lá que vivem todos os outros repos; a org existe
+      mas está vazia.
+- [x] Corrigir os remotes mortos: a conta `luctronics-ET` foi renomeada para
+      `lucianoET` e 21 repos locais ainda apontavam para o nome antigo,
+      funcionando só por redirect do GitHub — 21/09
