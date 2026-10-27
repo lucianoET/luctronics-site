@@ -21,6 +21,28 @@
   to = "/termos.html"
   status = 301
 
+# QR codes impressos (cartões/adesivos): o adesivo grava SÓ /q/<slug>; o destino
+# muda aqui sem reimprimir. 302 = temporário (navegador não guarda em cache).
+[[redirects]]
+  from = "/q/aguada"
+  to = "/produtos/aguada"
+  status = 302
+
+[[redirects]]
+  from = "/q/cmms"
+  to = "https://pmoc-orcin.vercel.app/"
+  status = 302
+
+[[redirects]]
+  from = "/q/refrigeracao"
+  to = "https://pmoc-orcin.vercel.app/refrigeracao"
+  status = 302
+
+[[redirects]]
+  from = "/q/*"
+  to = "/"
+  status = 302
+
 [[headers]]
   for = "/*"
   [headers.values]
